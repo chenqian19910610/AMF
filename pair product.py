@@ -7,7 +7,7 @@ df_col1 = pd.read_excel('Structural Column Schedule_cal.xlsx', sheetname='delive
                        converters={'element ID':str,'Geschoss':str,'Bauabschnitt':str,'Family and Type':str,
                                    'WBS code':str, 'Length':int, 'design load':int})
 df_col2 = pd.read_excel('ordering subtotal.xlsx', sheetname='supplier product',skiprows=None,
-                       converters={'Col Type':str,'Profile':str,'Length':int, 'Nd':int, 'total':int})
+                       converters={'Col Type':str,'Profile':str,'Length':int, 'Nd':int, 'total':int, 'estimate total':int})
 
 len1=len(df_col1.index)
 len2=len(df_col2.index)
@@ -23,12 +23,15 @@ for num in range(len2):
 for col in range(len1):
     for item in range(len2):
         if str(df_col2['Profile'][item]) in str(df_col1['Family and Type'][col]) \
-                and df_col1['design load'][col] in range(int(df_col2['Nd'][item]*0.8),int(df_col2['Nd'][item]*1.01))\
-                and df_col1['Length'][col] in range(int(df_col2['Length'][item]*0.8),int(df_col2['Length'][item]*1.01)):
+                and df_col1['design load'][col] in range(int(df_col2['Nd'][item]*0.85),int(df_col2['Nd'][item]*1.001))\
+                and df_col1['Length'][col] in range(int(df_col2['Length'][item]*0.85),int(df_col2['Length'][item]*1.001)):
             totallist[item] = totallist[item]+1
-        elses:
+        else:
             continue
-dftotal = pd.DataFrame({'total':totallist, 'Type NO.': df_col2['Type NO.']})
+
+listdiff = [n-m for n,m in zip(totallist,df_col2['estimate total'])]
+
+dftotal = pd.DataFrame({'total':totallist, 'Type NO.': df_col2['Type NO.'], 'Implenia': df_col2['estimate total'], 'difference':listdiff})
 writer = pd.ExcelWriter('PO num.xlsx')
 dftotal.to_excel(writer,sheet_name='supplier product',startcol=0,startrow=0, index=False)
 
