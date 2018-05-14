@@ -11,8 +11,8 @@ interfacing BIM model data (Autodesk Revit) with project management files (sched
 --determine the baseline schedule of delivery, baseline of material release date
 --determine if the material should be expedited or postponed or asplanned
 
-steps of using codes
+# steps of using codes
 
-step1:run the data_interaction.py to get BIM_extended file\
+step1:run the data_interaction.py to get BIM_extended file
 
 step2:run the data_merge.py to link building element (BIM_extended file) with construtcion look ahead schedule
